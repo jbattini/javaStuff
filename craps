@@ -1,0 +1,97 @@
+//written by Juan Battini
+
+import java.util.Scanner;
+import java.lang.Math;
+
+public class Craps {
+	static Scanner input = new Scanner(System.in);
+
+	public static void main(String[] args) {
+		String answer = "Y"; 
+		
+		menu();
+		playGame();
+		
+	}
+
+	public static int menu() {
+
+		int x = 0;
+
+		System.out.println("1. play");
+		System.out.println("2. exit");
+
+		x = input.nextInt();
+
+		return x;
+	}
+
+	public static void playGame() {
+		String answer = "Y";
+		boolean result = checkSum();
+		if (result)
+			System.out.println("you win");
+		else
+			System.out.println("you lose");
+		
+		while(answer != "N") {
+			System.out.println("do you wanna play again? (Y/N)");
+			answer = input.next();
+			
+			if(answer.equalsIgnoreCase("Y"))
+				playGame();
+			else if(answer.equalsIgnoreCase("N"))
+				System.out.println("thank you for playing");
+			break;
+		}
+		
+		
+	}
+
+	public static int roll() {
+		int value = (int) (Math.random() * 6 + 1);
+
+		return value;
+	}
+
+	public static int rollDie() {
+		int die1 = roll();
+		int die2 = roll();
+
+		// System.out.printf("you rolled %d and %d \n", die1, die2);
+
+		return die1 + die2;
+	}
+
+	public static boolean checkSum() {
+		int sum = rollDie();
+		int newRoll = rollDie();
+		int point = 0;
+
+		System.out.println("you rolled " + sum);
+		if (sum == 7 || sum == 11)
+			return true;
+		else if (sum == 2 || sum == 3 || sum == 12)
+			return false;
+		else {
+			System.out.printf("point is now %d \n", sum);
+			point = sum;
+			newRoll = rollDie();
+
+			do {
+				newRoll = rollDie();
+				System.out.printf("you rolled %d \n", newRoll);
+				if (newRoll == 7)
+					break;
+				else if (newRoll == point)
+					break;
+			} while (newRoll != 7 || newRoll != point);
+
+			if (newRoll == 7)
+				return false;
+			else
+				return true;
+
+		}
+	}
+}
